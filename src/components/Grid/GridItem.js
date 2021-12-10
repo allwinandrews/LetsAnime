@@ -3,7 +3,7 @@ import { useState } from "react";
 import ImageLoader from "../Layout/ImageLoader";
 
 export default function GridItem({ item }) {
-  console.log(item);
+  console.log("GridItem");
   const [imageLoad, setImageLoad] = useState(true);
 
   return (
@@ -25,20 +25,12 @@ export default function GridItem({ item }) {
           className="w-full h-full object-center object-cover lg:w-full lg:h-full"
         />
       </div>
-      <div className="mt-4 flex justify-between">
+      <div className="block mt-4 flex justify-between rounded shadow bg-yellow-500 border border-blue-500">
         <div>
-          <h3 className="text-sm text-gray-700">
-            <span aria-hidden="true" className="absolute inset-0" />
-            {item.title}
-          </h3>
-          <div data-title="This is a longer text mmmmmmmmmmmmmmmmmmmmm">
-            This is a longer text
-          </div>
-          <span>Episodes</span>
-          <p className="mt-1 text-sm text-gray-500">{item.episodes}</p>
+          <h3 className="text-sm">{item.title}</h3>
+          <span>Episodes {item.episodes}</span>
         </div>
-        <span>Rated</span>
-        <p className="text-sm font-medium text-gray-900">{item.rated}</p>
+        <span>{item.rated}</span>
       </div>
     </div>
   );

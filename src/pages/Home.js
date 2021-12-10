@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 
 import Card from "../components/Layout/Card";
 import GridList from "../components/Grid/GridList";
+import Searchbar from "../components/Layout/Searchbar";
+import SuspenseLoader from "../components/Layout/SuspenseLoader";
 
 import AnimeService from "../services/anime.service";
 
-export default function Anime() {
+const Home = React.memo(() => {
+  console.log("Home");
   const [animes, setAnime] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,11 +16,11 @@ export default function Anime() {
     setLoading(true);
     AnimeService.getAnimeSearch(query).then(
       (response) => {
-        console.log(response.data);
         setAnime(response.data.results);
         setLoading(false);
       },
       (error) => {
+        console.log(error.toString());
         const _content =
           (error.response && error.response.data) ||
           error.message ||
@@ -34,9 +37,17 @@ export default function Anime() {
     getAnimes("naruto");
   }, []);
 
+  const handleSearchBarResponse = (res) => getAnimes(res);
+
   return (
     <Card>
-      <GridList list={animes} />
+      <Searchbar
+        getFunction={AnimeService.getAnimeSearch}
+        passSearchText={handleSearchBarResponse}
+      />
+      {loading ? <SuspenseLoader /> : <GridList list={animes} />}
     </Card>
   );
-}
+});
+
+export default Home;
