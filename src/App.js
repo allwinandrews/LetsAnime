@@ -4,11 +4,11 @@ import "./styles/output.css";
 
 import Navbar from "./components/Layout/Navbar";
 import SuspenseLoader from "./components/Layout/SuspenseLoader";
-import Anime from "./pages/Anime";
+import Home from "./pages/Home";
 
 const Routes = () => {
   let routes = useRoutes([
-    { path: "/home", element: <Anime /> },
+    { path: "/home", element: <Home /> },
     { path: "/", element: <Navigate to="/home" /> },
   ]);
   return routes;
