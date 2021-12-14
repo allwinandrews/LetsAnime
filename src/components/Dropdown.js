@@ -12,7 +12,7 @@ const Dropdown = React.memo(({ items }) => {
         key={item.mal_id}
         className="cursor-pointer group hover:bg-blue-100"
         style={{ display: "flex" }}
-        to={`/anime/`}
+        to={`/anime/${item.mal_id}`}
       >
         <img
           style={{ height: "10%", width: "10%" }}

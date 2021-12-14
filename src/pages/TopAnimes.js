@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 
-import Card from "../components/Layout/Card";
 import GridList from "../components/Grid/GridList";
-import Searchbar from "../components/Layout/Searchbar";
 import SuspenseLoader from "../components/Layout/SuspenseLoader";
+import Card from "../components/Layout/Card";
+import Searchbar from "../components/Layout/Searchbar";
 
 import AnimeService from "../services/anime.service";
 
 const Home = React.memo(() => {
   console.log("Home");
-  const [animes, setAnime] = useState([]);
+  const [animes, setAnimes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getAnimes = (query) => {
+  const getTopAnimes = () => {
     setLoading(true);
-    AnimeService.getAnimeSearch(query).then(
+    AnimeService.getTopAnimes().then(
       (response) => {
-        setAnime(response.data.results);
+        setAnimes(response.data.top);
         setLoading(false);
       },
       (error) => {
@@ -27,24 +27,19 @@ const Home = React.memo(() => {
           error.toString();
 
         console.log(error);
-        setAnime(_content);
+        setAnimes(_content);
         setLoading(false);
       }
     );
   };
 
   useEffect(() => {
-    getAnimes("naruto");
+    getTopAnimes();
   }, []);
-
-  const handleSearchBarResponse = (res) => getAnimes(res);
 
   return (
     <Card>
-      <Searchbar
-        getFunction={AnimeService.getAnimeSearch}
-        passSearchText={handleSearchBarResponse}
-      />
+      <Searchbar />
       {loading ? <SuspenseLoader /> : <GridList list={animes} />}
     </Card>
   );

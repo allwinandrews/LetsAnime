@@ -4,12 +4,19 @@ import "./styles/output.css";
 
 import Navbar from "./components/Layout/Navbar";
 import SuspenseLoader from "./components/Layout/SuspenseLoader";
-import Home from "./pages/Home";
+import Card from "./components/Layout/Card";
+import Searchbar from "./components/Layout/Searchbar";
+
+import TopAnimes from "./pages/TopAnimes";
+import AnimeDetail from "./pages/AnimeDetail";
+import SearchResults from "./pages/SearchResults";
 
 const Routes = () => {
   let routes = useRoutes([
-    { path: "/home", element: <Home /> },
-    { path: "/", element: <Navigate to="/home" /> },
+    { path: "/top-animes", element: <TopAnimes /> },
+    { path: "/", element: <Navigate to="/top-animes" /> },
+    { path: "/results/search_query=:query", element: <SearchResults /> },
+    { path: "/anime/:id", element: <AnimeDetail /> },
   ]);
   return routes;
 };

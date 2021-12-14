@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { memo, useState } from "react";
+import { Link } from "react-router-dom";
 
 import ImageLoader from "../Layout/ImageLoader";
 
-export default function GridItem({ item }) {
+const GridItem = memo(({ item }) => {
   console.log("GridItem");
   const [imageLoad, setImageLoad] = useState(true);
 
   return (
-    <div key={item.mal_id} className="group relative">
+    <Link
+      key={item.mal_id}
+      className="group relative"
+      to={`/anime/${item.mal_id}`}
+    >
       <div
         className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none"
         style={{
@@ -32,6 +37,8 @@ export default function GridItem({ item }) {
         </div>
         <span>{item.rated}</span>
       </div>
-    </div>
+    </Link>
   );
-}
+});
+
+export default GridItem;
