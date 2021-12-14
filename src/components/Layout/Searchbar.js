@@ -1,16 +1,34 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Dropdown from "../Dropdown";
 
-const Searchbar = React.memo(({ getFunction, passSearchText }) => {
+import AnimeService from "../../services/anime.service";
+
+const Searchbar = React.memo(() => {
   console.log("Searchbar");
-  const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
+
+  const pathNameArray = window.location.pathname.split("/");
+
+  let searchQuery = pathNameArray.find((string) =>
+    string.includes("search_query=")
+  );
+
+  let toBeSearchText = "";
+  if (searchQuery) {
+    const search_query = searchQuery.replace("search_query=", "");
+    toBeSearchText = search_query.split("+").join(" ");
+  }
+
+  console.log(toBeSearchText);
+  const [searchText, setSearchText] = useState(toBeSearchText);
   const [results, setResults] = useState([]);
   const [loader, setLoader] = useState(false);
 
   const getResults = (query) => {
     setLoader(true);
-    getFunction(query).then(
+    AnimeService.getAnimeSearch(query).then(
       (response) => {
         setResults(response.data.results);
         setLoader(false);
@@ -29,18 +47,22 @@ const Searchbar = React.memo(({ getFunction, passSearchText }) => {
   };
 
   useEffect(() => {
-    if (searchText) getResults(searchText);
+    if (searchText.length > 2) getResults(searchText);
   }, [searchText]);
 
   const handleChange = (event) => {
     event.preventDefault();
     const { value } = event.target;
+    console.log(value);
+
     if (value === "") setResults([]);
-    else setSearchText(value);
+    setSearchText(value);
   };
 
   const handleSearch = () => {
-    passSearchText(searchText);
+    setResults([]);
+    const search_query = searchText.replace(/ /g, "+");
+    navigate(`/results/search_query=${search_query}`);
   };
 
   return (
@@ -61,7 +83,9 @@ const Searchbar = React.memo(({ getFunction, passSearchText }) => {
             GO
           </button>
         </div>
-        {results.length > 0 && <Dropdown items={results} />}
+        {Array.isArray(results) && results.length > 0 && (
+          <Dropdown items={results} />
+        )}
       </div>
     </div>
   );
